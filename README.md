@@ -15,4 +15,5 @@ Plugin to print images or textures from blueprints or c++
 Note: you have an example Level about how to use the main functions
 
 free to use, just thank me 
-cheers
+
+cheers to all
