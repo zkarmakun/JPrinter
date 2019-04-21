@@ -1,6 +1,6 @@
 # JPrinter
 
-UE version: 4.21
+UE version: 4.22
 
 Plugin to print images or textures from blueprints or c++
 
