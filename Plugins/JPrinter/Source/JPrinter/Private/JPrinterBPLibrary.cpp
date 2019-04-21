@@ -176,14 +176,20 @@ bool UJPrinterBPLibrary::printTexture2D(UTexture2D* texture, FString printer, bo
 	//const float DPIConvertion = 142.0643729189789f;
 	const float DPIConvertion = 142.06437f;
 
+	
 	bool out = false;
 	int32 width = texture->GetSizeX();
 	int32 height = texture->GetSizeY();
 	int32 bitDepth = 24;
 	TArray<FColor> colorData;
 	colorData.Init(FColor(), width * height);
-	FTexture2DMipMap& Mip = texture->PlatformData->Mips[0];
-	uint8* Data = (uint8*)Mip.BulkData.Lock(LOCK_READ_WRITE);
+
+	//UE_LOG(LogTemp, Log, TEXT("%s %i %i"), *texture->GetName(), width, height);
+
+	uint8* Data = static_cast<uint8*>(texture->PlatformData->Mips[0].BulkData.Lock(LOCK_READ_ONLY));
+	
+	//something when wrong reading you texture wtf? try reimporting your texture, yes UE it's dump
+	check(Data);
 
 	for (int i = 0; i < colorData.Num(); i++)
 	{
@@ -193,7 +199,7 @@ bool UJPrinterBPLibrary::printTexture2D(UTexture2D* texture, FString printer, bo
 		colorData[i].A = 255;
 	}
 
-	Mip.BulkData.Unlock();
+	texture->PlatformData->Mips[0].BulkData.Unlock();
 	texture->UpdateResource();
 
 	if (paperSize != EPaperSize::None)
